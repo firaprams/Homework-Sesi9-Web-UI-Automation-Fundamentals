@@ -1,0 +1,215 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-10-22T16:38:42.618Z",
+    "end": "2026-10-22T16:39:30.741Z",
+    "duration": 48123,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "0515db1e-825c-4658-942e-7d9b4edae017",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "199f31d7-b594-45a3-88a3-11edd45cc150",
+          "title": "Add User Test",
+          "fullFile": "G:\\DATA D\\Zhafirah P\\Digital Skola QA Engineering\\Sesi 9 Web UI Automation Fundamental\\Praktek_Homework_Sesi9\\ZhafirahPrameswari_WebUIAutomationFundamental\\test\\addUser.js",
+          "file": "\\test\\addUser.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Add User Test\"",
+              "fullTitle": "Add User Test \"before all\" hook in \"Add User Test\"",
+              "timedOut": false,
+              "duration": 631,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "driver = await new Builder().forBrowser('chrome').build();\n// Memaksimalkan ukuran window browser agar card lebih mudah terlihat\nawait driver.manage().window().maximize();",
+              "err": {},
+              "uuid": "6dd22d5d-7a40-4112-8d8b-63d4b9e2ffc4",
+              "parentUUID": "199f31d7-b594-45a3-88a3-11edd45cc150",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [
+            {
+              "title": "\"after all\" hook in \"Add User Test\"",
+              "fullTitle": "Add User Test \"after all\" hook in \"Add User Test\"",
+              "timedOut": false,
+              "duration": 84,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "if (driver) {\n    await driver.quit();\n}",
+              "err": {},
+              "uuid": "a3f33c9f-c651-45b9-908e-bd4dec7f7fca",
+              "parentUUID": "199f31d7-b594-45a3-88a3-11edd45cc150",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "tests": [
+            {
+              "title": "Seharusnya berhasil menambahkan user baru",
+              "fullTitle": "Add User Test Seharusnya berhasil menambahkan user baru",
+              "timedOut": false,
+              "duration": 44317,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// 1. Buka website\n        await driver.get('https://belajar-bareng.onrender.com/');\n        await slowDown(1500); // Beri jeda setelah buka website\n        // 2. Login otomatis\n        const usernameLogin = await driver.findElement(By.css('input[data-testid=\"username-input\"]'));\n        const passwordLogin = await driver.findElement(By.css('input[data-testid=\"password-input\"]'));\n        await usernameLogin.sendKeys('admin');\n        await slowDown(500); // Jeda mengetik username\n        await passwordLogin.sendKeys('admin');\n        await slowDown(500); // Jeda mengetik password\n        const loginForm = await driver.findElement(By.css('form'));\n        const loginButton = await driver.findElement(By.css('button[data-testid=\"login-button\"]'));\n        await loginButton.click();\n        await slowDown(1000); \n        // Tunggu sampai form login hilang\n        await driver.wait(until.stalenessOf(loginForm), 10000);\n        // 3. Tunggu halaman List User\n        await driver.wait(until.urlContains('/users'), 10000);\n        await slowDown(1500); \n        // 4. Klik tombol Add\n        const addButton = await driver.wait(\n            until.elementLocated(By.xpath('//*[@id=\"app\"]/div/div/div/div/button')),\n            10000\n        );\n        await driver.wait(until.elementIsVisible(addButton), 10000);\n        await addButton.click();\n        await slowDown(1500); \n        // 5. Tunggu form Add Users muncul\n        await driver.wait(until.elementLocated(By.css('input[data-testid=\"username-input\"]')), 10000);\n        // 6. Isi Username dan Age dengan data unik\n        const uniqueId = Math.random().toString(36).substring(2, 6);\n        const newUsername = 'U' + uniqueId;\n        const newAge = Math.floor(Math.random() * 50 + 20).toString();\n        const usernameInput = await driver.findElement(By.css('input[data-testid=\"username-input\"]'));\n        const ageInput = await driver.findElement(By.css('input[data-testid=\"age-input\"]'));\n        await usernameInput.sendKeys(newUsername);\n        await slowDown(500);\n        await ageInput.sendKeys(newAge);\n        await slowDown(500);\n        console.log(`Username yang di-input ke form: ${newUsername}`);\n        console.log(`Age yang di-input ke form: ${newAge}`);\n                // 7. Klik Submit\n        const submitButton = await driver.findElement(By.css('button[data-testid=\"submit-button\"]'));\n        await submitButton.click();\n        // ================= PENYEMPURNAAN AKURAT: EKSTRAKSI TOAST KATA =================\n        const toastElement = await driver.wait(\n            until.elementLocated(By.xpath('//*[contains(text(), \"User successfully added\")]')),\n            10000\n        );\n        const toastText = await toastElement.getText(); \n        console.log(`Teks Toast yang terbaca browser: \"${toastText}\"`);\n        \n        // Menggunakan split pada kata \"Hi \" lalu menghapus tanda seru (!) di ujung nama secara instan\n        let finalBackendUsername = newUsername; \n        if (toastText.includes('Hi ')) {\n            finalBackendUsername = toastText.split('Hi ')[1].replace('!', '').trim();\n        }\n        console.log(`Username Resmi dari Server Backend (Valid): \"${finalBackendUsername}\"`);\n        // =====================================================================================\n        // 8. Klik tombol List setelah Submit\n        const listButton = await driver.wait(\n            until.elementLocated(\n                By.xpath('//button[contains(text(), \"List\") or contains(text(), \"Back\")]')\n            ),\n            10000\n        );\n        await driver.wait(until.elementIsVisible(listButton), 5000);\n        await listButton.click();\n        await slowDown(2000); \n        // 9. Cari user yang baru ditambahkan dengan Loop Scroll Terbalik\n        await driver.wait(until.elementLocated(By.css('li.user-item')), 15000);\n        let foundUserText = '';\n        let isUserFound = false;\n        const maxRetries = 25; // Ditambah menjadi 25 agar memberikan waktu lebih bagi database Render\n        \n        for (let i = 0; i < maxRetries; i++) {\n            const userItems = await driver.findElements(By.css('li.user-item'));\n            \n            if (userItems.length > 0) {\n                const lastUserItem = userItems[userItems.length - 1];\n                \n                await driver.executeScript(\n                    \"arguments[0].scrollIntoView({ behavior: 'smooth', block: 'end' });\", \n                    lastUserItem\n                );\n                await slowDown(1200); \n                // Perlebar area pencarian membaca hingga 10 baris card paling bawah\n                const startIdx = Math.max(0, userItems.length - 10);\n                let bottomUsersText = '';\n                \n                for (let j = userItems.length - 1; j >= startIdx; j--) {\n                    bottomUsersText += await userItems[j].getText() + ' ';\n                }\n                if (bottomUsersText.includes(finalBackendUsername)) {\n                    foundUserText = bottomUsersText;\n                    isUserFound = true;\n                    break; \n                }\n            }\n        }",
+              "err": {},
+              "uuid": "4821eb8b-74b0-4edc-91ec-03d5a0a0f068",
+              "parentUUID": "199f31d7-b594-45a3-88a3-11edd45cc150",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4821eb8b-74b0-4edc-91ec-03d5a0a0f068"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 44317,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        },
+        {
+          "uuid": "cb78b93d-731c-439a-9f71-ffa986d204f1",
+          "title": "Login Test",
+          "fullFile": "G:\\DATA D\\Zhafirah P\\Digital Skola QA Engineering\\Sesi 9 Web UI Automation Fundamental\\Praktek_Homework_Sesi9\\ZhafirahPrameswari_WebUIAutomationFundamental\\test\\login.js",
+          "file": "\\test\\login.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Login Test\"",
+              "fullTitle": "Login Test \"before all\" hook in \"Login Test\"",
+              "timedOut": false,
+              "duration": 594,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "driver = await new Builder().forBrowser('chrome').build();",
+              "err": {},
+              "uuid": "0a718401-c4ea-414c-a11b-883be86e8334",
+              "parentUUID": "cb78b93d-731c-439a-9f71-ffa986d204f1",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [
+            {
+              "title": "\"after all\" hook in \"Login Test\"",
+              "fullTitle": "Login Test \"after all\" hook in \"Login Test\"",
+              "timedOut": false,
+              "duration": 59,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "if (driver) {\n    await driver.quit();\n}",
+              "err": {},
+              "uuid": "25bc7745-fd13-4517-a558-98a3ab950c36",
+              "parentUUID": "cb78b93d-731c-439a-9f71-ffa986d204f1",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "tests": [
+            {
+              "title": "Seharusnya berhasil masuk dengan kredensial yang valid",
+              "fullTitle": "Login Test Seharusnya berhasil masuk dengan kredensial yang valid",
+              "timedOut": false,
+              "duration": 2434,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Membuka website\nawait driver.get('https://belajar-bareng.onrender.com/');\n// Cari field username dan password pada form login\nconst username = await driver.findElement(\n    By.css('input[data-testid=\"username-input\"]')\n);\nconst password = await driver.findElement(\n    By.css('input[data-testid=\"password-input\"]')\n);\n// Isi username dan password sesuai kredensial\nawait username.sendKeys('admin');\nawait password.sendKeys('admin');\n// Cari form login sebelum tombol diklik\nconst loginForm = await driver.findElement(By.css('form'));\n// Mengklik tombol Sign in\nconst loginButton = await driver.findElement(\n    By.css('button[data-testid=\"login-button\"]')\n);\nawait loginButton.click();\n// Tunggu sampai form login lama hilang\nawait driver.wait(\n    until.stalenessOf(loginForm),\n    10000\n);\n// Memvalidasi hasil dengan assertion\nconst usernameFields = await driver.findElements(\n    By.css('input[data-testid=\"username-input\"]')\n);\nexpect(usernameFields).to.have.lengthOf(0);\nconsole.log('Login berhasil!');",
+              "err": {},
+              "uuid": "2875c3fa-b662-49fc-a4fb-0da579cfbe66",
+              "parentUUID": "cb78b93d-731c-439a-9f71-ffa986d204f1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "2875c3fa-b662-49fc-a4fb-0da579cfbe66"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2434,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 30000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 10000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.8.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "8.1.1"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.3.2"
+    }
+  }
+}

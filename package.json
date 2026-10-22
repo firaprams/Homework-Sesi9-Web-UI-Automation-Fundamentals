@@ -1,0 +1,32 @@
+{
+
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+
+  "scripts": {
+    "test": "mocha test --timeout 10000",
+    "report-mochawesome": "mocha test --timeout 10000 --reporter mochawesome",
+    "report-simple-html": "mocha test --timeout 10000 --reporter mocha-simple-html-reporter --reporter-options output=report/report.html"
+
+  },
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "selenium-webdriver": "^4.46.0"
+
+  },
+
+  "devDependencies": {
+    "chai": "^6.3.0",
+    "mocha": "^11.7.6",
+    "mocha-simple-html-reporter": "^2.0.0",
+    "mochawesome": "^8.0.1"
+
+  }
+
+}
+
